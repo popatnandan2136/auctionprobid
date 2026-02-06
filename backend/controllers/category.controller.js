@@ -1,20 +1,28 @@
 import Category from "../models/Category.js";
 
 export const addCategory = async (req, res) => {
-  const category = new Category({
-    name: req.body.name,
-  });
-
-  await category.save();
-  res.send("Category added");
+  try {
+    const category = await Category.create({ name: req.body.name });
+    res.status(201).json({ message: "Category created", category });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
 
 export const getCategories = async (req, res) => {
-  const categories = await Category.find();
-  res.send(categories);
+  try {
+    const categories = await Category.find();
+    res.json(categories);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
 
 export const deleteCategory = async (req, res) => {
-  await Category.findByIdAndDelete(req.params.id);
-  res.send("Category deleted");
+  try {
+    await Category.findByIdAndDelete(req.params.id);
+    res.json({ message: "Category deleted" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
