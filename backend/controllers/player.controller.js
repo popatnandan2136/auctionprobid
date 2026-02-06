@@ -53,7 +53,7 @@ export const updatePlayer = async (req, res) => {
     res.json({
       message: "Player updated successfully",
       player,
-    });
+    })
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
