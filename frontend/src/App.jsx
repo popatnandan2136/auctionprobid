@@ -1,15 +1,17 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import AdminDashboard from './pages/admin/AdminDashboard.jsx';
+import CreateAuction from './pages/admin/CreateAuction.jsx';
 import './App.css';
 
 function App() {
   return (
     <Router>
-      <div className="app">
-        <h1>Auction Management System</h1>
-        <Routes>
-          {/* Define routes here */}
-        </Routes>
-      </div>
+      <Routes>
+        {/* Define routes here */}
+        <Route path="/" element={<Navigate to="/admin/dashboard" replace />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/create-auction" element={<CreateAuction />} />
+      </Routes>
     </Router>
   );
 }
