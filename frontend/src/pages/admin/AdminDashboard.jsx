@@ -21,7 +21,7 @@ const AdminDashboard = () => {
     const fetchAuctions = async () => {
         setLoading(true);
         try {
-            const { data } = await API.get('/auctions/all'); // Updated endpoint
+            const { data } = await API.get('/auctions/all');
             setAuctions(data);
             setError(null);
         } catch (err) {
@@ -134,7 +134,7 @@ const AdminDashboard = () => {
                                             <span className="status-dot"></span> {auction.status}
                                         </div>
                                         <div className="card-actions">
-                                            <button className="action-btn settings" title="Manage Auction" onClick={() => navigate(`/admin/auction/${auction._id}`)}><FaCog /></button>
+                                            <button className="action-btn settings" title="Auction Details" onClick={() => navigate(`/admin/auction/${auction._id}`)}><FaCog /></button>
                                             <button className="action-btn settings" title="Public View" onClick={() => navigate(`/auction/${auction._id}`)}><FaUsers /></button>
                                             <button className="action-btn delete" title="Delete" onClick={(e) => handleDelete(e, auction._id)}><FaTrash /></button>
                                         </div>
