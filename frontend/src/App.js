@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import AdminDashboard from './pages/admin/AdminDashboard.jsx';
-import CreateAuction from './pages/admin/CreateAuction.jsx';
-import AuctionDetails from './pages/admin/AuctionDetails.jsx';
-import AuctionTable from './pages/admin/AuctionTable.jsx';
+import AdminDashboard from './pages/admin/AdminDashboard.js';
+import CreateAuction from './pages/admin/CreateAuction.js';
+import AuctionDetails from './pages/admin/AuctionDetails.js';
+import AuctionTable from './pages/admin/AuctionTable.js';
 import './App.css';
 
 function App() {
