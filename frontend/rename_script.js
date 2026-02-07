@@ -14,6 +14,7 @@ function getAllFiles(dir, fileList = []) {
         }
     });
     return fileList;
+    
 }
 
 const files = getAllFiles(srcDir);

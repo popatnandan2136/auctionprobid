@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Users, DollarSign, Award, Share2 } from 'lucide-react';
+import { Users, DollarSign, Award, Share2, Bus } from 'lucide-react';
+
 
 const AuctionDashboard = () => {
     const { id } = useParams();
@@ -12,7 +13,8 @@ const AuctionDashboard = () => {
         viewers: 1542,
         teams: [
             { id: 1, name: "CSK", budget: 45000000, players: 12, slots: 8, logo: "https://placehold.co/40" },
-            { id: 2, name: "MI", budget: 32000000, players: 14, slots: 6, logo: "https://placehold.co/40" }
+            { id: 2, name: "MI", budget: 32000000, players: 14, slots: 6, logo: "https://placehold.co/40" },
+           
         ],
         players: {
             remaining: [
