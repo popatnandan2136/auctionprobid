@@ -88,6 +88,19 @@ export default function CreateAdmin() {
                     </div>
                 </div>
 
+                    <div style={{ marginBottom: "30px" }}>
+                    <label style={{ display: "block", marginBottom: "8px", fontWeight: "500", color: "#333" }}>Role</label>
+                    <select
+                        name="role"
+                        value={formData.role}
+                        onChange={handleChange}
+                        style={{ width: "100%", padding: "12px", borderRadius: "5px", border: "1px solid #ccc" }}>
+                        <option value="ADMIN">Admin</option>
+                        <option value="MASTER_ADMIN">Master Admin</option>
+                    </select>
+                </div>
+
+
                 <button type="submit" style={{ width: "100%", padding: "12px", background: "#1e3c72", color: "white", border: "none", borderRadius: "5px", cursor: "pointer", fontWeight: "bold", fontSize: "1rem" }}>
                     Create Admin
                 </button>
