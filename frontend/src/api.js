@@ -7,7 +7,7 @@ const API = axios.create({
 // Add a request interceptor to include the auth token in headers
 API.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
         if (token) {
             config.headers['x-auth-token'] = token;
         }
@@ -17,5 +17,16 @@ API.interceptors.request.use(
         return Promise.reject(error);
     }
 );
+
+export const setToken = (token) => {
+    if (token) {
+        API.defaults.headers.common['x-auth-token'] = token;
+        // Also ensure it is in session storage to match usage
+        sessionStorage.setItem('token', token);
+    } else {
+        delete API.defaults.headers.common['x-auth-token'];
+        sessionStorage.removeItem('token');
+    }
+};
 
 export default API;

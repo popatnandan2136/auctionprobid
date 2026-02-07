@@ -28,14 +28,4 @@ const auctionSchema = new mongoose.Schema({
   }]
 }, { timestamps: true });
 
-<<<<<<< HEAD
-
-module.exports = mongoose.model("Auction", auctionSchema);
 export default mongoose.models.Auction || mongoose.model("Auction", auctionSchema);
-=======
-<<<<<<< HEAD
-export default mongoose.models.Auction || mongoose.model("Auction", auctionSchema);
-=======
-module.exports = mongoose.model("Auction", auctionSchema);
->>>>>>> f0509fe1f3935a3dbe2d7691c1e0611307b6635d
->>>>>>> 60bbd6055756e9b22c16fb1c5e161e320a17b977

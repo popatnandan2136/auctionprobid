@@ -1,0 +1,16 @@
+.admin-dashboard {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+    background: #1e3c72;
+    color: white;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+    background: #f4f6f9;
+}
