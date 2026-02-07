@@ -1,0 +1,10 @@
+node_modules
+.env
+npm-debug.log
+yarn-error.log
+coverage
+dist
+models/Auction.js
+models/Player.js
+models/Team.js
+models/User.js
