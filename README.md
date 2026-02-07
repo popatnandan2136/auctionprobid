@@ -119,7 +119,7 @@ Beyond sports, the system can be extended into a multi-domain auction platform s
 
 **Team Name:** Star Group
 
-*   Pan Yash J.a
+*   Pan Yash J.
 *   Sapariya Yash H.
 *   Vachhani Sneh K.
 *   Popat Nandan N.
