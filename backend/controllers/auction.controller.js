@@ -1,6 +1,6 @@
 import Auction from "../models/Auction.js";
-import Player from "../models/player.js";
-import Team from "../models/team.js";
+import Player from "../models/Player.js";
+import Team from "../models/Team.js";
 
 /****************************************************
  * CREATE AUCTION
@@ -19,7 +19,7 @@ export const createAuction = async (req, res) => {
     if (typeof req.body.enabledStats === "string") {
       try { req.body.enabledStats = JSON.parse(req.body.enabledStats); } catch (e) { }
     }
-    // Parse Custom Categories & Roles
+    // 🔥 Parse Custom Categories & Roles
     if (typeof req.body.customCategories === "string") {
       try { req.body.customCategories = JSON.parse(req.body.customCategories); } catch (e) { }
     }
@@ -34,8 +34,8 @@ export const createAuction = async (req, res) => {
 
     const auction = await Auction.create({
       ...req.body,
-      createdBy: req.user?.id || null, // Allow null if no user
-      status: "NOT_STARTED",
+      createdBy: req.user?.id,
+      status: "NOT_STARTED", // 🔥 ensure default
       isLive: false,
     });
 
@@ -389,7 +389,7 @@ export const toggleRegistration = async (req, res) => {
 /****************************************************
  * DELETE AUCTION (HARD DELETE)
  ****************************************************/
-import PlayerRequest from "../models/playerRequest.js";
+import PlayerRequest from "../models/PlayerRequest.js";
 
 export const deleteAuction = async (req, res) => {
   try {
@@ -400,7 +400,7 @@ export const deleteAuction = async (req, res) => {
     // Hard Delete Cascade
     await Team.deleteMany({ auctionId: id });
     await Player.deleteMany({ auctionId: id });
-    // await PlayerRequest.deleteMany({ auctionId: id }); // Uncomment if model exists
+    await PlayerRequest.deleteMany({ auctionId: id });
     await Auction.findByIdAndDelete(id);
 
     res.json({ message: "Auction and all related data deleted successfully" });

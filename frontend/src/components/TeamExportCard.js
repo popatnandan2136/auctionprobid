@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React from 'react';
 import { User, Shield, Phone, Mail } from 'lucide-react';
 
@@ -166,13 +165,8 @@ const TeamExportCard = ({ team, players, auctionName, refProp }) => {
                 <span>ProBid Auction Platform</span>
             </div>
 
->>>>>>> 78c0b533f4efec107d418a105a7aa70d313aeb97
         </div>
     );
 };
 
-<<<<<<< HEAD
 export default TeamExportCard;
-=======
-export default TeamExportCard;
->>>>>>> 78c0b533f4efec107d418a105a7aa70d313aeb97

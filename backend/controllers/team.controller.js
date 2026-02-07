@@ -1,8 +1,11 @@
-import Team from "../models/team.js";
-import User from "../models/user.js";
+import Team from "../models/Team.js";
+import User from "../models/User.js";
 import Auction from "../models/Auction.js";
 import bcrypt from "bcryptjs";
 
+/***************************************************
+ * Utility: Generate Random Password
+ **************************************************/
 function generatePassword() {
   const chars =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -13,6 +16,9 @@ function generatePassword() {
   return pwd;
 }
 
+/***************************************************
+ * CREATE TEAM + AUTO-GENERATE TEAM LOGIN USER
+ **************************************************/
 export const createTeam = async (req, res) => {
   try {
     const {
@@ -28,16 +34,24 @@ export const createTeam = async (req, res) => {
       logoUrl = `http://localhost:5000/uploads/teams/${req.file.filename}`;
     }
 
+    // 1. Check auction
     const auction = await Auction.findById(auctionId);
     if (!auction) {
       return res.status(404).json({ message: "Auction not found" });
     }
 
+    // 2. Check for Existing User (Reusable Owner)
     let teamUser = await User.findOne({
       $or: [{ mobile: ownerMobile }, { email: ownerEmail }]
     });
 
-    if (!teamUser) {
+    if (teamUser) {
+      // 2a. Check Removed: Admins ARE allowed to own teams now.
+      // if (teamUser.role === "MASTER_ADMIN" || teamUser.role === "ADMIN") { ... }
+
+      // Info: We will reuse this 'teamUser._id'
+    } else {
+      // 2b. Create New User if not exists
       const autoPassword = generatePassword();
       const passwordHash = await bcrypt.hash(autoPassword, 10);
 
@@ -50,9 +64,11 @@ export const createTeam = async (req, res) => {
         status: "ACTIVE"
       });
 
+      // Attach raw password for initial response only
       teamUser.tempPassword = autoPassword;
     }
 
+    // 3. Create Team
     const team = await Team.create({
       name,
       logoUrl,
@@ -63,11 +79,21 @@ export const createTeam = async (req, res) => {
       totalPoints: auction.pointsPerTeam,
       availablePoints: auction.pointsPerTeam,
       spentPoints: 0,
-      userId: teamUser._id
+      userId: teamUser._id // Link to User (New or Existing)
     });
 
+    // 4. Update User's teamId (Enable switching or just link latest)
+    // Note: If user owns multiple teams, teamId field might need to be array in future, 
+    // but for now we just link the latest or keep specific logic. 
+    // Common pattern: User has many teams (one to many). 
+    // If User Model `teamId` is single, it points to ONE team. 
+    // We update it to the new team so they login to this one by default or handle logic elsewhere.
     teamUser.teamId = team._id;
     await teamUser.save();
+
+    // 5. Update auction team count - REMOVED (totalTeams is a limit, not a counter)
+    // auction.totalTeams = (auction.totalTeams || 0) + 1;
+    // await auction.save();
 
     res.status(201).json({
       message: "Team created successfully",
@@ -86,6 +112,9 @@ export const createTeam = async (req, res) => {
   }
 };
 
+/***************************************************
+ * GET TEAMS BY AUCTION
+ **************************************************/
 export const getTeamsByAuction = async (req, res) => {
   try {
     const { auctionId } = req.params;
@@ -96,6 +125,9 @@ export const getTeamsByAuction = async (req, res) => {
   }
 };
 
+/***************************************************
+ * GET TEAM BY ID  ✅ THIS WAS MISSING
+ **************************************************/
 export const getTeamById = async (req, res) => {
   try {
     const { teamId } = req.params;
@@ -111,14 +143,19 @@ export const getTeamById = async (req, res) => {
   }
 };
 
+/***************************************************
+ * UPDATE TEAM
+ **************************************************/
 export const updateTeam = async (req, res) => {
   try {
     const { teamId } = req.params;
     const updates = req.body;
 
+    // 1. Fetch current team
     const team = await Team.findById(teamId);
     if (!team) return res.status(404).json({ message: "Team not found" });
 
+    // 2. Apply updates manually to check for points change
     Object.keys(updates).forEach((key) => {
       team[key] = updates[key];
     });
@@ -127,6 +164,7 @@ export const updateTeam = async (req, res) => {
       team.logoUrl = `http://localhost:5000/uploads/teams/${req.file.filename}`;
     }
 
+    // 3. Recalculate Available Points (Self-Healing)
     if (team.totalPoints !== undefined || team.spentPoints !== undefined) {
       team.spentPoints = team.spentPoints || 0;
       team.availablePoints = team.totalPoints - team.spentPoints;
@@ -134,14 +172,17 @@ export const updateTeam = async (req, res) => {
 
     const updatedTeam = await team.save();
 
+    // 4. Sync updates to User (Login Credentials)
     let user = null;
     if (team.userId) {
       user = await User.findById(team.userId);
     }
 
+    // Fallback: If no linked userId, try to find the user who owns this team
     if (!user) {
       user = await User.findOne({ teamId: team._id });
       if (user) {
+        // Backfill the link for future
         team.userId = user._id;
         await team.save();
       }
@@ -152,6 +193,10 @@ export const updateTeam = async (req, res) => {
       if (updates.ownerName) user.name = updates.ownerName;
       if (updates.ownerMobile) user.mobile = updates.ownerMobile;
       if (updates.ownerEmail) user.email = updates.ownerEmail;
+
+      // If password is being reset (optional, future proofing)
+      // if (updates.password) { ... } 
+
       await user.save();
     } else {
       console.warn(`No linked user found for team ${team._id} to sync updates.`);
@@ -188,6 +233,9 @@ export const deleteTeam = async (req, res) => {
   }
 };
 
+/***************************************************
+ * ADD BONUS POINTS
+ **************************************************/
 export const addBonus = async (req, res) => {
   try {
     const { amount, teamId, auctionId } = req.body;
@@ -203,7 +251,7 @@ export const addBonus = async (req, res) => {
       for (const team of teams) {
         team.totalPoints = (team.totalPoints || 0) + bonus;
         team.spentPoints = team.spentPoints || 0;
-        team.availablePoints = team.totalPoints - team.spentPoints;
+        team.availablePoints = team.totalPoints - team.spentPoints; // Self-heal
         await team.save();
       }
 

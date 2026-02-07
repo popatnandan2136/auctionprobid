@@ -1,5 +1,6 @@
+import User from "../models/User.js";
 import bcrypt from "bcryptjs";
-import User from "../models/user.js";
+import { generatePassword, generateEmail } from "../utils/credentialGenerator.js";
 
 export const createAdmin = async (req, res) => {
   try {
