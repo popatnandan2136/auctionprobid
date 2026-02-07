@@ -1,6 +1,6 @@
-import Auction from "../models/Auction.js";
-import Player from "../models/Player.js";
-import Team from "../models/Team.js";
+import Auction from "../models/auction.js";
+import Player from "../models/player.js";
+import Team from "../models/team.js";
 
 /****************************************************
  * CREATE AUCTION
@@ -389,7 +389,7 @@ export const toggleRegistration = async (req, res) => {
 /****************************************************
  * DELETE AUCTION (HARD DELETE)
  ****************************************************/
-import PlayerRequest from "../models/PlayerRequest.js";
+import PlayerRequest from "../models/playerRequest.js";
 
 export const deleteAuction = async (req, res) => {
   try {

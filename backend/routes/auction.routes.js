@@ -14,7 +14,7 @@ import {
     removePlayerFromTeam,
     relistPlayer,
     toggleRegistration,
-    deleteAuction, 
+    deleteAuction,
 } from "../controllers/auction.controller.js";
 import auth from "../middleware/auth.middleware.js";
 import authorize from "../middleware/role.middleware.js";
@@ -22,7 +22,7 @@ import { handleUpload, uploadAuction } from "../middleware/upload.middleware.js"
 
 const router = express.Router();
 
-router.get("/all", getAllAuctions); 
+router.get("/all", getAllAuctions);
 router.get("/", getAllAuctions);
 router.get("/:id", getAuctionById);
 

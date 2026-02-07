@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
 
 const teamSchema = new mongoose.Schema({
   auctionId: { type: mongoose.Schema.Types.ObjectId, ref: "Auction" },
@@ -15,4 +15,4 @@ const teamSchema = new mongoose.Schema({
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" }
 }, { timestamps: true });
 
-module.exports = mongoose.model("Team", teamSchema);
+export default mongoose.models.Team || mongoose.model("Team", teamSchema);

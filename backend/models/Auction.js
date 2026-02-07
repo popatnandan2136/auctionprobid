@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
 
 const auctionSchema = new mongoose.Schema({
   name: String,
@@ -13,12 +13,12 @@ const auctionSchema = new mongoose.Schema({
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   auctionType: { type: String, enum: ["WITH_STATS", "WITHOUT_STATS"] },
   enabledStats: [{ key: String, label: String, dataType: String, required: Boolean }],
-  customCategories: [String], 
-  customRoles: [String], 
+  customCategories: [String],
+  customRoles: [String],
   status: { type: String, enum: ["NOT_STARTED", "LIVE", "FINISHED"], default: "NOT_STARTED" },
   isLive: { type: Boolean, default: false },
   isRegistrationOpen: { type: Boolean, default: true },
-  lastBidTime: { type: Date, default: Date.now }, 
+  lastBidTime: { type: Date, default: Date.now },
   sponsors: [{
     name: String,
     logoUrl: String,
@@ -28,4 +28,4 @@ const auctionSchema = new mongoose.Schema({
   }]
 }, { timestamps: true });
 
-export default mongoose.model("Auction", auctionSchema);
+export default mongoose.models.Auction || mongoose.model("Auction", auctionSchema);

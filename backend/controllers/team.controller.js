@@ -1,6 +1,6 @@
-import Team from "../models/Team.js";
-import User from "../models/User.js";
-import Auction from "../models/Auction.js";
+import Team from "../models/team.js";
+import User from "../models/user.js";
+import Auction from "../models/auction.js";
 import bcrypt from "bcryptjs";
 
 function generatePassword() {

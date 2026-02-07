@@ -9,7 +9,7 @@ import {
   addPlayerToAuction,
   sellPlayer,
   markUnsold,
-  removePlayerFromTeam, 
+  removePlayerFromTeam,
   relistPlayer
 } from "../controllers/player.controller.js";
 import auth from "../middleware/auth.middleware.js";

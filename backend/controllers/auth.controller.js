@@ -1,8 +1,8 @@
-const User = require('../models/User');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+import User from '../models/User.js';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
-exports.register = async (req, res) => {
+export const register = async (req, res) => {
     try {
         // Dummy implementation to satisfy requirement if needed, but primarily just to exist
         res.status(200).json({ msg: 'Register endpoint' });
@@ -12,7 +12,7 @@ exports.register = async (req, res) => {
     }
 };
 
-exports.login = async (req, res) => {
+export const login = async (req, res) => {
     try {
         res.status(200).json({ msg: 'Login endpoint' });
     } catch (err) {

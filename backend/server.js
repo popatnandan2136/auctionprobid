@@ -1,7 +1,7 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-require('dotenv').config();
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import 'dotenv/config';
 
 const app = express();
 
@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 // Database Connection
-const connectDB = require('./config/db');
+import connectDB from './config/db.js';
 connectDB();
 
 // Basic Route
@@ -19,8 +19,11 @@ app.get('/', (req, res) => {
 });
 
 // Define Routes
-app.use('/api/auth', require('./routes/authRoutes'));
-app.use('/api/auctions', require('./routes/auctionRoutes'));
+import authRoutes from './routes/authRoutes.js';
+import auctionRoutes from './routes/auction.routes.js';
+
+app.use('/api/auth', authRoutes);
+app.use('/api/auctions', auctionRoutes);
 
 
 const PORT = process.env.PORT || 5000;

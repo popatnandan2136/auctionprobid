@@ -1,4 +1,4 @@
-import Partner from "../models/partner.model.js";
+import Partner from "../models/partner.js";
 export const createPartner = async (req, res) => {
   try {
     const partner = await Partner.create(req.body);
@@ -12,7 +12,7 @@ export const createPartner = async (req, res) => {
   }
 };
 
-export const getAllPartners = async (req, res) => {
+export const getPartners = async (req, res) => {
   try {
     const partners = await Partner.find();
 
