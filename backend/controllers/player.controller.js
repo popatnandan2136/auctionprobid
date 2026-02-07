@@ -1,6 +1,6 @@
-import Player from "../models/Player.js";
+import Player from "../models/player.js";
 
-exports.createPlayer = async (req, res) => {
+export const createPlayer = async (req, res) => {
   try {
     const player = await Player.create(req.body);
 
@@ -10,7 +10,7 @@ exports.createPlayer = async (req, res) => {
   }
 };
 
-exports.getAllPlayers = async (req, res) => {
+export const getAllPlayers = async (req, res) => {
   try {
     const players = await Player.find();
 
@@ -20,7 +20,7 @@ exports.getAllPlayers = async (req, res) => {
   }
 };
 
-exports.getPlayersByAuction = async (req, res) => {
+export const getPlayersByAuction = async (req, res) => {
   try {
     const { auctionId } = req.params;
     const players = await Player.find({ auctionId });
@@ -30,7 +30,7 @@ exports.getPlayersByAuction = async (req, res) => {
   }
 };
 
-exports.getPlayerById = async (req, res) => {
+export const getPlayerById = async (req, res) => {
   try {
     const player = await Player.findById(req.params.id);
 
@@ -44,7 +44,7 @@ exports.getPlayerById = async (req, res) => {
   }
 };
 
-exports.updatePlayer = async (req, res) => {
+export const updatePlayer = async (req, res) => {
   try {
     const player = await Player.findByIdAndUpdate(
       req.params.id,
@@ -62,7 +62,7 @@ exports.updatePlayer = async (req, res) => {
   }
 };
 
-exports.deletePlayer = async (req, res) => {
+export const deletePlayer = async (req, res) => {
   try {
     const player = await Player.findByIdAndDelete(req.params.id);
 
