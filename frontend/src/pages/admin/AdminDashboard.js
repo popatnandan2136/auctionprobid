@@ -1,78 +1,50 @@
-import React, { useState } from 'react';
-import { FaBars, FaChartBar, FaGavel, FaUsers, FaPlus, FaCog, FaEdit, FaTrash, FaSignOutAlt } from 'react-icons/fa';
-import './AdminDashboard.css';
+import React from "react";
+import { Link, Outlet } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
-const AdminDashboard = () => {
-    const [activeTab, setActiveTab] = useState('All Auctions');
-    const [sidebarOpen, setSidebarOpen] = useState(true);
+export default function AdminDashboard() {
+    const { user, isMaster } = useAuth();
 
     return (
-        <div className="admin-layout">
-            {/* Header */}
-            <header className="admin-header">
-                <div className="header-left">
-                    <button className="menu-btn" onClick={() => setSidebarOpen(!sidebarOpen)}>
-                        <FaBars />
-                    </button>
-                    <div className="logo">
-                        <span className="logo-text">ProBidAuction</span>
-                    </div>
-                </div>
-                <div className="header-right">
-                </div>
-            </header>
+        <div style={{ display: "flex", minHeight: "calc(100vh - 80px)" }}>
+            {/* Sidebar */}
+            <aside style={{ width: "250px", background: "#f8f9fa", borderRight: "1px solid #eee", padding: "20px" }}>
+                <h5 style={{ color: "#888", textTransform: "uppercase", fontSize: "0.85rem", letterSpacing: "1px", marginBottom: "20px" }}>Admin Menu</h5>
 
-            <div className="admin-body">
-                {/* Sidebar */}
-                <aside className={`admin-sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
-                    <div className="sidebar-section">
-                        <h3 className="sidebar-title">ADMIN MENU</h3>
-                        <ul className="sidebar-menu">
-                            <li className="menu-item active">
-                                <FaChartBar className="menu-icon" /> Dashboard
+                <ul style={{ listStyle: "none", padding: 0 }}>
+                    <li style={{ marginBottom: "10px" }}>
+                        <Link to="/admin" style={{ textDecoration: "none", color: "#333", display: "block", padding: "10px", borderRadius: "5px", transition: "background 0.2s" }} className="admin-link">
+                            📊 Dashboard
+                        </Link>
+                    </li>
+                    {!isMaster() && (
+                        <>
+                            <li style={{ marginBottom: "10px" }}>
+                                <Link to="/admin/auctions" style={{ textDecoration: "none", color: "#333", display: "block", padding: "10px", borderRadius: "5px" }} className="admin-link">
+                                    🔨 Auctions
+                                </Link>
                             </li>
-                            <li className="menu-item">
-                                <FaGavel className="menu-icon" /> Auctions
+                            <li style={{ marginBottom: "10px" }}>
+                                <Link to="/admin/players" style={{ textDecoration: "none", color: "#333", display: "block", padding: "10px", borderRadius: "5px" }} className="admin-link">
+                                    👤 Player Management
+                                </Link>
                             </li>
-                            <li className="menu-item">
-                                <FaUsers className="menu-icon" /> Player Management
-                            </li>
-                        </ul>
-                    </div>
-                </aside>
+                        </>
+                    )}
+                    {isMaster() && (
+                        <li style={{ marginBottom: "10px" }}>
+                            <Link to="/admin/admins" style={{ textDecoration: "none", color: "#333", display: "block", padding: "10px", borderRadius: "5px" }} className="admin-link">
+                                🔑 Admin Management
+                            </Link>
+                        </li>
+                    )}
+                </ul>
+            </aside>
 
-                {/* Main Content */}
-                <main className="admin-main">
-                    <div className="main-header">
-                        <h2>Auction Management</h2>
-                        <button className="create-btn"><FaPlus /> Create Auction</button>
-                    </div>
-
-                    <div className="tabs">
-                        {['All Auctions', 'Live', 'Upcoming', 'Completed'].map((tab) => (
-                            <button
-                                key={tab}
-                                className={`tab-btn ${activeTab === tab ? 'active' : ''}`}
-                                onClick={() => setActiveTab(tab)}
-                            >
-                                {tab}
-                            </button>
-                        ))}
-                    </div>
-
-                    <div className="auction-grid">
-                        {/* Example Auction Card */}
-                        <div className="auction-card">
-                            <div className="card-image">
-                                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/84/Tata_IPL_Logo_2024.png/800px-Tata_IPL_Logo_2024.png" alt="IPL 2026" />
-                            </div>
-                        </div>
-                        {/* Add more cards here dynamically */}
-                    </div>
-                </main>
-            </div>
+            {/* content */}
+            <main style={{ flex: 1, padding: "30px" }}>
+                <Outlet />
+            </main>
         </div>
     );
-};
-
-export default AdminDashboard;
+}
