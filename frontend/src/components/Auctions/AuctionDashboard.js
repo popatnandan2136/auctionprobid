@@ -123,8 +123,6 @@ const AuctionDashboard = () => {
 
                 {activeTab === 'sold' && <p>Sold players list here...</p>}
                 {activeTab === 'unsold' && <p>Unsold players list here...</p>}
-
-                
             </div>
         </div>
     );

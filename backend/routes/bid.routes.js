@@ -5,8 +5,10 @@ import role from "../middleware/role.middleware.js";
 
 const router = express.Router();
 
+// Public/Auth - Get State (Polling)
 router.get("/:auctionId/state", getAuctionState);
 
+// Team - Place Bid
 router.post("/place", auth, role(["TEAM", "ADMIN", "MASTER_ADMIN"]), placeBid);
 
 export default router;

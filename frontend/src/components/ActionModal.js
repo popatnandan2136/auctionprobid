@@ -1,66 +1,70 @@
-import React from 'react';
-import { X, CheckCircle, AlertTriangle, Info, AlertCircle } from 'lucide-react';
+import React from "react";
+import { CheckCircle, AlertTriangle, XCircle, X } from "lucide-react";
 
-const ActionModal = ({ isOpen, onClose, type = 'alert', title, message, confirmText = 'OK', cancelText = 'Cancel', onConfirm }) => {
+/**
+ * ActionModal Component
+ * Replaces native confirm/alert dialogs.
+ * 
+ * Props:
+ * - isOpen: boolean
+ * - onClose: function
+ * - onConfirm: function (for confirmation type)
+ * - title: string
+ * - message: string
+ * - type: 'confirm' | 'success' | 'danger' | 'alert'
+ * - confirmText: string
+ * - cancelText: string
+ */
+export default function ActionModal({
+    isOpen,
+    onClose,
+    onConfirm,
+    title,
+    message,
+    type = "alert",
+    confirmText = "Confirm",
+    cancelText = "Cancel"
+}) {
     if (!isOpen) return null;
 
-    const getIcon = () => {
-        switch (type) {
-            case 'success': return <CheckCircle size={48} color="#4ade80" />;
-            case 'danger': return <AlertCircle size={48} color="#ef4444" />;
-            case 'confirm': return <AlertTriangle size={48} color="#f59e0b" />;
-            default: return <Info size={48} color="#3b82f6" />;
-        }
-    };
-
-    const getButtonColor = () => {
-        switch (type) {
-            case 'success': return '#4ade80';
-            case 'danger': return '#ef4444';
-            case 'confirm': return '#f59e0b';
-            default: return '#3b82f6';
-        }
-    };
+    const isConfirm = type === "confirm" || type === "danger";
+    const color = type === "danger" ? "#d32f2f" : type === "success" ? "#2e7d32" : "#1e3c72";
+    const Icon = type === "danger" ? AlertTriangle : type === "success" ? CheckCircle : AlertTriangle;
 
     return (
         <div style={{
             position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-            background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            zIndex: 1000
+            background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10000
         }}>
             <div style={{
-                background: 'white', padding: '30px', borderRadius: '15px',
-                width: '400px', maxWidth: '90%',
-                display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center',
-                boxShadow: '0 10px 25px rgba(0,0,0,0.2)',
-                position: 'relative',
-                animation: 'fadeIn 0.2s ease-out'
+                background: 'white', borderRadius: '15px', padding: '30px', width: '90%', maxWidth: '400px',
+                textAlign: 'center', boxShadow: '0 10px 25px rgba(0,0,0,0.2)', position: 'relative',
+                animation: 'popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
             }}>
                 <button
                     onClick={onClose}
-                    style={{
-                        position: 'absolute', top: '15px', right: '15px',
-                        background: 'none', border: 'none', cursor: 'pointer', color: '#999'
-                    }}
+                    style={{ position: 'absolute', top: '15px', right: '15px', background: 'none', border: 'none', cursor: 'pointer', color: '#999' }}
                 >
                     <X size={20} />
                 </button>
 
-                <div style={{ marginBottom: '20px' }}>
-                    {getIcon()}
+                <div style={{
+                    width: '60px', height: '60px', borderRadius: '50%', background: `${color}20`,
+                    color: color, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px'
+                }}>
+                    <Icon size={32} />
                 </div>
 
-                <h2 style={{ margin: '0 0 10px 0', fontSize: '1.5rem', color: '#333' }}>{title}</h2>
+                <h3 style={{ margin: '0 0 10px 0', color: '#333' }}>{title}</h3>
                 <p style={{ margin: '0 0 25px 0', color: '#666', lineHeight: '1.5' }}>{message}</p>
 
-                <div style={{ display: 'flex', gap: '15px', width: '100%', justifyContent: 'center' }}>
-                    {type === 'confirm' && (
+                <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
+                    {isConfirm && (
                         <button
                             onClick={onClose}
                             style={{
-                                padding: '10px 25px', borderRadius: '8px', border: '1px solid #ddd',
-                                background: 'white', color: '#666', cursor: 'pointer', fontWeight: 'bold',
-                                flex: 1
+                                padding: '10px 25px', borderRadius: '30px', border: '1px solid #ddd', background: 'white',
+                                color: '#666', fontWeight: '600', cursor: 'pointer', flex: 1
                             }}
                         >
                             {cancelText}
@@ -69,13 +73,12 @@ const ActionModal = ({ isOpen, onClose, type = 'alert', title, message, confirmT
                     <button
                         onClick={() => {
                             if (onConfirm) onConfirm();
-                            else onClose();
+                            if (!isConfirm) onClose(); // Auto close if alert/success
                         }}
                         style={{
-                            padding: '10px 25px', borderRadius: '8px', border: 'none',
-                            background: getButtonColor(), color: 'white', cursor: 'pointer', fontWeight: 'bold',
-                            flex: 1,
-                            boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+                            padding: '10px 25px', borderRadius: '30px', border: 'none', background: color,
+                            color: 'white', fontWeight: '600', cursor: 'pointer', flex: 1,
+                            boxShadow: `0 4px 10px ${color}40`
                         }}
                     >
                         {confirmText}
@@ -83,13 +86,11 @@ const ActionModal = ({ isOpen, onClose, type = 'alert', title, message, confirmT
                 </div>
             </div>
             <style>{`
-                @keyframes fadeIn {
-                    from { opacity: 0; transform: scale(0.95); }
-                    to { opacity: 1; transform: scale(1); }
+                @keyframes popIn {
+                    from { transform: scale(0.8); opacity: 0; }
+                    to { transform: scale(1); opacity: 1; }
                 }
             `}</style>
         </div>
     );
-};
-
-export default ActionModal;
+}

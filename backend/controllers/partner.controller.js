@@ -1,58 +1,48 @@
-import Partner from "../models/partner.js";
-export const createPartner = async (req, res) => {
-  try {
-    const partner = await Partner.create(req.body);
+import Partner from "../models/Partner.js";
 
-    res.status(201).json({
-      message: "Partner created successfully",
-      partner,
-    });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
+// Get All Partners (Public)
 export const getPartners = async (req, res) => {
   try {
-    const partners = await Partner.find();
-
+    const partners = await Partner.find().sort({ createdAt: -1 });
     res.json(partners);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };
 
-export const updatePartner = async (req, res) => {
+// Create Partner (Admin Only)
+export const createPartner = async (req, res) => {
   try {
-    const partner = await Partner.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
+    const { name, title, description, mobile, type, website, order } = req.body;
 
-    if (!partner) {
-      return res.status(404).json({ message: "Partner not found" });
-    }
+    // Check for image
+    const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
+    if (!imageUrl) return res.status(400).json({ message: "Image is required" });
 
-    res.json({
-      message: "Partner updated successfully",
-      partner,
+    const partner = await Partner.create({
+      type: type || 'OWNER', // Default
+      name,
+      title,
+      description,
+      mobile,
+      website,
+      order: order ? parseInt(order) : 0,
+      imageUrl
     });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+
+    res.status(201).json(partner);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };
 
+// Delete Partner (Admin Only)
 export const deletePartner = async (req, res) => {
   try {
-    const partner = await Partner.findByIdAndDelete(req.params.id);
-
-    if (!partner) {
-      return res.status(404).json({ message: "Partner not found" });
-    }
-
+    const { id } = req.params;
+    await Partner.findByIdAndDelete(id);
     res.json({ message: "Partner deleted successfully" });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };

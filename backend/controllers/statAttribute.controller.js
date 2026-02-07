@@ -1,4 +1,4 @@
-import StatAttribute from "../models/statattribute.js";
+import StatAttribute from "../models/StatAttribute.js";
 
 export const createStatAttribute = async (req, res) => {
     try {

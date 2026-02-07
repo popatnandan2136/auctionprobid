@@ -14,6 +14,7 @@ export default function Login({ setToken }) {
       alert(res.message);
     }
   };
+
   return (
     <div>
       <h3>Login</h3>

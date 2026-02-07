@@ -10,8 +10,10 @@ import role from "../middleware/role.middleware.js";
 
 const router = express.Router();
 
+// Public (or maybe authenticated? usually admin needs this, but fetching might be public for auction display)
 router.get("/", getAllStatAttributes);
 
+// Admin Only
 router.post("/", auth, role(["ADMIN", "MASTER_ADMIN"]), createStatAttribute);
 router.put("/:id", auth, role(["ADMIN", "MASTER_ADMIN"]), updateStatAttribute);
 router.delete("/:id", auth, role(["ADMIN", "MASTER_ADMIN"]), deleteStatAttribute);

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import Navbar from '../Navbar';
 import Sidebar from './Sidebar';
 import BottomNav from './BottomNav';
 import { useAuth } from '../../context/AuthContext';
@@ -10,6 +9,7 @@ const MainLayout = ({ children }) => {
     const location = useLocation();
     const { user, isAdmin, isMaster } = useAuth();
 
+    // Toggle Sidebar
     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
     return (

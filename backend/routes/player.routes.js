@@ -1,26 +1,39 @@
 import express from "express";
 import {
-  createPlayer,
-  getAllPlayers,
-  getPlayerById,
-  getPlayersByAuction,
+  addPlayer,
   updatePlayer,
-  deletePlayer
+  deletePlayer,
+  getPlayersByAuction,
+  getPlayerById,
+  searchPlayers,
+  addPlayerToAuction,
+  sellPlayer,
+  markUnsold,
+  removePlayerFromTeam, // Ensure this import exists in controller
+  relistPlayer
 } from "../controllers/player.controller.js";
 import auth from "../middleware/auth.middleware.js";
 import role from "../middleware/role.middleware.js";
+
 import upload, { handleUpload } from "../middleware/upload.middleware.js";
 
 const router = express.Router();
 
-// Public Routes
-router.get("/", getAllPlayers);
-router.get("/:id", getPlayerById);
+// Public
 router.get("/auction/:auctionId", getPlayersByAuction);
+router.get("/search", searchPlayers);
+router.get("/:playerId", getPlayerById);
 
-// Protected Routes
-router.post("/", auth, role(["ADMIN", "MASTER_ADMIN"]), handleUpload(upload, "image"), createPlayer);
-router.put("/:id", auth, role(["ADMIN", "MASTER_ADMIN"]), handleUpload(upload, "image"), updatePlayer);
-router.delete("/:id", auth, role(["ADMIN", "MASTER_ADMIN"]), deletePlayer);
+// Admin / Master Admin
+router.post("/add", auth, role(["ADMIN", "MASTER_ADMIN"]), handleUpload(upload, "image"), addPlayer);
+router.post("/add-to-auction", auth, role(["ADMIN", "MASTER_ADMIN"]), addPlayerToAuction);
+router.put("/:playerId", auth, role(["ADMIN", "MASTER_ADMIN"]), handleUpload(upload, "image"), updatePlayer);
+router.delete("/:playerId", auth, role(["ADMIN", "MASTER_ADMIN"]), deletePlayer);
+
+// Auction Actions (Admin/Auctioneer)
+router.post("/:playerId/sell", auth, role(["ADMIN", "MASTER_ADMIN"]), sellPlayer);
+router.post("/:playerId/unsold", auth, role(["ADMIN", "MASTER_ADMIN"]), markUnsold);
+router.post("/:playerId/relist", auth, role(["ADMIN", "MASTER_ADMIN"]), relistPlayer);
+router.post("/:playerId/remove-team", auth, role(["ADMIN", "MASTER_ADMIN"]), removePlayerFromTeam);
 
 export default router;
