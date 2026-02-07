@@ -26,14 +26,11 @@ router.get("/all", getAllAuctions);
 router.get("/", getAllAuctions);
 router.get("/:id", getAuctionById);
 
-router.post("/create", auth, authorize(["MASTER_ADMIN", "ADMIN"]), handleUpload(uploadAuction, "logo"), createAuction); // Alias
 router.post("/", auth, authorize(["MASTER_ADMIN", "ADMIN"]), handleUpload(uploadAuction, "logo"), createAuction);
-
 router.put("/:id", auth, authorize("ADMIN"), handleUpload(uploadAuction, "logo"), updateAuction);
-router.delete("/:id", auth, authorize("ADMIN"), deleteAuction); // 🔥 New Delete Route
+router.delete("/:id", auth, authorize("ADMIN"), deleteAuction);
 router.post("/:id/sponsor", auth, authorize("ADMIN"), addSponsor);
 router.put("/:id/start", auth, authorize("ADMIN"), startAuction);
-router.put("/:id/resume", auth, authorize("ADMIN"), resumeAuction);
 router.put("/:id/resume", auth, authorize("ADMIN"), resumeAuction);
 router.put("/:id/finish", auth, authorize("ADMIN"), finishAuction);
 router.put("/:id/toggle-registration", auth, authorize("ADMIN"), toggleRegistration);

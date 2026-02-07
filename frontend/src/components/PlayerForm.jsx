@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import API from "../../api";
+import API from "../api";
 import { Image as ImageIcon } from "lucide-react";
 
-import ImageCropper from "../../components/ImageCropper";
+import ImageCropper from "./ImageCropper";
 
 export default function PlayerForm({ auctionId, onSuccess, onCancel, initialData, showModal }) {
     const [formData, setFormData] = useState({

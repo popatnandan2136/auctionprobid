@@ -19,7 +19,7 @@ export const createAuction = async (req, res) => {
     if (typeof req.body.enabledStats === "string") {
       try { req.body.enabledStats = JSON.parse(req.body.enabledStats); } catch (e) { }
     }
-    // 🔥 Parse Custom Categories & Roles
+    // Parse Custom Categories & Roles
     if (typeof req.body.customCategories === "string") {
       try { req.body.customCategories = JSON.parse(req.body.customCategories); } catch (e) { }
     }
@@ -34,8 +34,8 @@ export const createAuction = async (req, res) => {
 
     const auction = await Auction.create({
       ...req.body,
-      createdBy: req.user?.id,
-      status: "NOT_STARTED", // 🔥 ensure default
+      createdBy: req.user?.id || null, // Allow null if no user
+      status: "NOT_STARTED",
       isLive: false,
     });
 
@@ -400,7 +400,7 @@ export const deleteAuction = async (req, res) => {
     // Hard Delete Cascade
     await Team.deleteMany({ auctionId: id });
     await Player.deleteMany({ auctionId: id });
-    await PlayerRequest.deleteMany({ auctionId: id });
+    // await PlayerRequest.deleteMany({ auctionId: id }); // Uncomment if model exists
     await Auction.findByIdAndDelete(id);
 
     res.json({ message: "Auction and all related data deleted successfully" });

@@ -21,10 +21,13 @@ app.get('/', (req, res) => {
 // Define Routes
 import authRoutes from './routes/authRoutes.js';
 import auctionRoutes from './routes/auction.routes.js';
+import playerRoutes from './routes/player.routes.js';
+import teamRoutes from './routes/team.routes.js';
 
 app.use('/api/auth', authRoutes);
 app.use('/api/auctions', auctionRoutes);
-
+app.use('/api/players', playerRoutes);
+app.use('/api/teams', teamRoutes);
 
 const PORT = process.env.PORT || 5000;
 
