@@ -111,7 +111,7 @@ export default function PlayerFormFlow({ token, setGlobalToken, addLog }) {
     return (
         <div className="card" style={{ border: "2px solid #28a745" }}>
             <h2 style={{ marginTop: 0, color: "#28a745" }}>📝 Public Player Form Test</h2>
-            <p>Simulates the public link flow: OTP -> Form -> Admin Approval</p>
+            <p>Simulates the public link flow: OTP {'->'} Form {'->'} Admin Approval</p>
 
             {step === 1 && (
                 <div>

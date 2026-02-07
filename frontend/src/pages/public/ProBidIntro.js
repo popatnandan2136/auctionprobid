@@ -35,7 +35,7 @@ export default function ProBidIntro() {
                     </h2>
                 </div>
 
-                <div style={{ display: 'none', md: 'flex', display: 'flex', alignItems: 'center', gap: '30px', fontWeight: '500', color: '#555' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '30px', fontWeight: '500', color: '#555' }}>
                     <a href="#" style={{ textDecoration: 'none', color: '#333', display: 'flex', alignItems: 'center', gap: '5px' }}>Home</a>
                     <a href="#contact" style={{ textDecoration: 'none', color: '#333', display: 'flex', alignItems: 'center', gap: '5px' }}>Contact Us</a>
                     <a href="#help" style={{ textDecoration: 'none', color: '#333', display: 'flex', alignItems: 'center', gap: '5px' }}>Help & Support</a>

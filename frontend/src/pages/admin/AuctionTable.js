@@ -24,29 +24,10 @@ export default function AuctionTable() {
 
     const loadData = () => {
         setLoading(true);
-        // Mock data for UI testing if backend fails
         Promise.all([
-            API.get(`/auctions/${id}`).catch(() => ({
-                data: {
-                    name: "Mock Auction",
-                    status: "LIVE",
-                    maxPlayersPerTeam: 25,
-                    pointsPerTeam: 100000000,
-                    sponsors: [{ name: "Sponsor 1", logoUrl: "" }],
-                    enabledStats: [{ key: "runs", label: "Runs" }, { key: "wickets", label: "Wickets" }]
-                }
-            })),
-            API.get(`/teams/auction/${id}`).catch(() => ({
-                data: [
-                    { _id: "t1", name: "Team Alpha", ownerName: "Owner A", totalPoints: 100000000, spentPoints: 20000000, availablePoints: 80000000, playersBought: 5 }
-                ]
-            })),
-            API.get(`/players/auction/${id}`).catch(() => ({
-                data: [
-                    { _id: "p1", name: "Player One", role: "Batsman", basePrice: 2000000, status: "UNSOLD", category: "Batsman" },
-                    { _id: "p2", name: "Player Two", role: "Bowler", basePrice: 1500000, status: "SOLD", soldPrice: 5000000, teamId: "t1", category: "Bowler" }
-                ]
-            }))
+            API.get(`/auction/${id}`),
+            API.get(`/team/auction/${id}`),
+            API.get(`/player/auction/${id}`)
         ]).then(([aucRes, teamRes, playerRes]) => {
             setAuction(aucRes.data);
             setTeams(teamRes.data);
@@ -976,6 +957,3 @@ export default function AuctionTable() {
         </div>
     );
 }
-
-
-

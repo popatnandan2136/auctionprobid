@@ -25,6 +25,9 @@ export default function AdminManagement() {
     const [crop, setCrop] = useState({ x: 0, y: 0 });
     const [zoom, setZoom] = useState(1);
     const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+    const [showCropper, setShowCropper] = useState(false);
+    const [imageSrc, setImageSrc] = useState(null);
+    const [finalImage, setFinalImage] = useState(null);
 
     // Password Reset State
     const [showResetModal, setShowResetModal] = useState(false);
@@ -47,6 +50,14 @@ export default function AdminManagement() {
         }
     };
 
+    const fetchPartners = async () => {
+        try {
+            const res = await API.get("/partner"); // Public endpoint
+            setPartners(res.data);
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
     useEffect(() => {
         fetchAdmins();
@@ -74,6 +85,26 @@ export default function AdminManagement() {
         } catch (err) {
             setModalConfig({ isOpen: true, type: 'danger', title: 'Error', message: err.response?.data?.message || 'Failed to register user', confirmText: 'Close' });
         }
+    };
+
+    const handleDeleteAdmin = async (id, name) => {
+        setModalConfig({
+            isOpen: true,
+            type: 'confirm',
+            title: 'Delete Admin?',
+            message: `Are you sure you want to delete admin "${name}"?`,
+            confirmText: 'Delete',
+            cancelText: 'Cancel',
+            onConfirm: async () => {
+                try {
+                    await API.delete(`/admin/${id}`);
+                    fetchAdmins();
+                    setModalConfig({ isOpen: true, type: 'success', title: 'Deleted', message: 'Admin deleted successfully.', confirmText: 'Okay' });
+                } catch (err) {
+                    setModalConfig({ isOpen: true, type: 'danger', title: 'Error', message: 'Failed to delete admin', confirmText: 'Close' });
+                }
+            }
+        });
     };
 
     const openResetModal = (id, name) => {

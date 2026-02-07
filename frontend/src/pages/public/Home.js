@@ -50,6 +50,16 @@ export default function Home() {
                                 )}
                             </div>
 
+                            <h3 style={{ margin: "0 0 10px 0", fontSize: "1.4rem" }}>{auction.name}</h3>
+                            <p style={{ color: "#777", marginBottom: "20px", fontSize: "0.9rem" }}>
+                                Date: {new Date(auction.auctionDate).toLocaleDateString()}<br />
+                                Teams: {auction.totalTeams}
+                            </p>
+
+                            <div style={{ marginTop: "auto", display: "flex", gap: "10px" }}>
+                                <Link to={`/auction-view/${auction._id}`} className="btn-primary" style={{ flex: 1, textAlign: "center", textDecoration: "none" }}>
+                                    View Details
+                                </Link>
                                 {auction.isRegistrationOpen && (
                                     <Link to={`/register?auctionId=${auction._id}`} className="btn-secondary" style={{ flex: 1, textAlign: "center", textDecoration: "none", background: "#28a745", color: "white" }}>
                                         Register
