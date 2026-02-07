@@ -11,3 +11,4 @@ router.delete("/:id", auth, authorize("MASTER_ADMIN"), deleteAdmin);
 router.put("/:id/status", auth, authorize("MASTER_ADMIN"), toggleAdminStatus);
 
 export default router;
+    
