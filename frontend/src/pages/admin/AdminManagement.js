@@ -298,6 +298,70 @@ export default function AdminManagement() {
                         </div>
                     )}
 
+                    {isMaster() && (
+                        <div style={{ background: "white", padding: "20px", borderRadius: "10px", boxShadow: "0 4px 6px rgba(0,0,0,0.1)", marginBottom: "30px", border: "1px solid #ddd" }}>
+                            <h3 style={{ marginTop: 0, marginBottom: "15px", color: "#333", display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <Briefcase size={20} color="#1565c0" /> Add Official Partner / Owner
+                            </h3>
+                            <form onSubmit={handleAddPartner} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px" }}>
+
+                                {/* Type Selection */}
+                                <div style={{ gridColumn: 'span 2', display: 'flex', gap: '15px', marginBottom: '10px' }}>
+                                    <label style={{ display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer' }}>
+                                        <input type="radio" name="ptype" checked={partnerForm.type === 'OWNER'} onChange={() => setPartnerForm({ ...partnerForm, type: 'OWNER' })} />
+                                        <strong>Owner (Person)</strong>
+                                    </label>
+                                    <label style={{ display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer' }}>
+                                        <input type="radio" name="ptype" checked={partnerForm.type === 'PARTNER'} onChange={() => setPartnerForm({ ...partnerForm, type: 'PARTNER' })} />
+                                        <strong>Official Partner (Company)</strong>
+                                    </label>
+                                </div>
+
+                                <input
+                                    type="text"
+                                    placeholder={partnerForm.type === 'OWNER' ? "Full Name (e.g. Nandan Popat)" : "Company Name (e.g. ProTech Solutions)"}
+                                    required value={partnerForm.name} onChange={e => setPartnerForm({ ...partnerForm, name: e.target.value })}
+                                    style={{ padding: "10px", borderRadius: "5px", border: "1px solid #ccc" }}
+                                />
+                                <input
+                                    type="text"
+                                    placeholder={partnerForm.type === 'OWNER' ? "Title (e.g. Owner & Developer)" : "Title (e.g. Technology Partner)"}
+                                    required value={partnerForm.title} onChange={e => setPartnerForm({ ...partnerForm, title: e.target.value })}
+                                    style={{ padding: "10px", borderRadius: "5px", border: "1px solid #ccc" }}
+                                />
+                                <input
+                                    type="text"
+                                    placeholder={partnerForm.type === 'OWNER' ? "Mobile" : "Contact Number"}
+                                    required value={partnerForm.mobile} onChange={e => setPartnerForm({ ...partnerForm, mobile: e.target.value })}
+                                    style={{ padding: "10px", borderRadius: "5px", border: "1px solid #ccc" }}
+                                />
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', gridColumn: 'span 2' }}>
+                                    <input
+                                        type="number"
+                                        placeholder="Priority (1 = Top)"
+                                        value={partnerForm.order} onChange={e => setPartnerForm({ ...partnerForm, order: e.target.value })}
+                                        style={{ padding: "10px", borderRadius: "5px", border: "1px solid #ccc" }}
+                                    />
+                                    {partnerForm.type === 'PARTNER' && (
+                                        <input
+                                            type="text"
+                                            placeholder="Website (e.g. www.example.com)"
+                                            value={partnerForm.website} onChange={e => setPartnerForm({ ...partnerForm, website: e.target.value })}
+                                            style={{ padding: "10px", borderRadius: "5px", border: "1px solid #ccc" }}
+                                        />
+                                    )}
+                                </div>
+
+                                <div style={{ gridColumn: "span 1", position: 'relative' }}>
+                                    <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem', fontWeight: 'bold' }}>{partnerForm.type === 'OWNER' ? 'Profile Image' : 'Company Logo'}</label>
+                                    <input type="file" accept="image/*" onChange={handleFileChange} style={{ padding: "5px" }} />
+                                    {finalImage && <span style={{ color: 'green', fontSize: '0.8rem', marginLeft: '10px' }}>Image Selected</span>}
+                                </div>
+                                <textarea placeholder="Description" required value={partnerForm.description} onChange={e => setPartnerForm({ ...partnerForm, description: e.target.value })} style={{ gridColumn: "span 2", padding: "10px", borderRadius: "5px", border: "1px solid #ccc", minHeight: "80px" }} />
+                                <button type="submit" style={{ gridColumn: "span 2", padding: "12px", background: "#1e3c72", color: "white", border: "none", borderRadius: "5px", cursor: "pointer", fontWeight: "bold" }}>Add {partnerForm.type === 'OWNER' ? 'Owner' : 'Partner'}</button>
+                            </form>
+                        </div>
+                    )}
 
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
                         {partners.map(partner => (
