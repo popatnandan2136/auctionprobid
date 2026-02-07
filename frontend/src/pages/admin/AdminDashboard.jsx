@@ -76,7 +76,7 @@ const AdminDashboard = () => {
                                         <span className="status-dot"></span> LIVE
                                     </div>
                                     <div className="card-actions">
-                                        <button className="action-btn settings"><FaCog /></button>
+                                        <button className="action-btn settings" onClick={() => navigate('/admin/auction/ipl2026')}><FaCog /></button>
                                         <button className="action-btn edit"><FaEdit /></button>
                                         <button className="action-btn delete"><FaTrash /></button>
                                     </div>
