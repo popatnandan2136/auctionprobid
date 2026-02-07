@@ -24,6 +24,15 @@ const AuctionDetails = () => {
                         <span className="logo-text">{auctionName} - Management</span>
                     </div>
                 </div>
+                <div className="header-right">
+                    <button
+                        className="create-btn"
+                        onClick={() => navigate(`/admin/auction/${id}/table`)}
+                        style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px' }}
+                    >
+                        <FaUsers /> View Auction Table
+                    </button>
+                </div>
             </header>
 
             <div className="admin-main create-auction-container">
