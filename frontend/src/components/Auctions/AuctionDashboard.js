@@ -86,44 +86,7 @@ const AuctionDashboard = () => {
                 ))}
             </div>
 
-            {/* Content Area */}
-            <div style={{ background: 'white', borderRadius: '10px', padding: '20px', minHeight: '400px' }}>
-                {activeTab === 'remaining' && (
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '20px' }}>
-                        {auctionDetails.players.remaining.map(player => (
-                            <div key={player.id} style={{ border: '1px solid #eee', borderRadius: '10px', padding: '15px', textAlign: 'center' }}>
-                                <img src={player.image} alt={player.name} style={{ width: '80px', height: '80px', borderRadius: '50%', marginBottom: '10px' }} />
-                                <h4 style={{ margin: '5px 0' }}>{player.name}</h4>
-                                <p style={{ color: '#666', fontSize: '0.9rem' }}>{player.role}</p>
-                                <button style={{ width: '100%', marginTop: '10px', padding: '8px', background: '#1e3c72', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Bid Now</button>
-                            </div>
-                        ))}
-                    </div>
-                )}
-
-                {activeTab === 'teams' && (
-                    <div style={{ display: 'grid', gap: '15px' }}>
-                        {auctionDetails.teams.map(team => (
-                            <div key={team.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '15px', borderBottom: '1px solid #f0f0f0' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                                    <img src={team.logo} alt="Team" style={{ width: '40px', height: '40px', borderRadius: '50%' }} />
-                                    <div>
-                                        <h4 style={{ margin: 0 }}>{team.name}</h4>
-                                        <p style={{ margin: 0, fontSize: '0.8rem', color: '#666' }}>Players: {team.players} | Slots: {team.slots}</p>
-                                    </div>
-                                </div>
-                                <div style={{ textAlign: 'right' }}>
-                                    <p style={{ margin: 0, fontWeight: 'bold', color: '#2e7d32' }}>₹{team.budget.toLocaleString()}</p>
-                                    <p style={{ margin: 0, fontSize: '0.8rem', color: '#666' }}>Remaining</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
-
-                {activeTab === 'sold' && <p>Sold players list here...</p>}
-                {activeTab === 'unsold' && <p>Unsold players list here...</p>}
-            </div>
+           
         </div>
     );
 };
