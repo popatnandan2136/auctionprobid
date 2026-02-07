@@ -1,19 +1,26 @@
-const express = require("express");
-const playerController = require("../controllers/player.controller.js");
-const auth = require("../middleware/auth.middleware.js"); // Ensure this exists (I created it)
-const authorize = require("../middleware/role.middleware.js");
+import express from "express";
+import {
+  createPlayer,
+  getAllPlayers,
+  getPlayerById,
+  getPlayersByAuction,
+  updatePlayer,
+  deletePlayer
+} from "../controllers/player.controller.js";
+import auth from "../middleware/auth.middleware.js";
+import role from "../middleware/role.middleware.js";
+import upload, { handleUpload } from "../middleware/upload.middleware.js";
 
 const router = express.Router();
 
 // Public Routes
-router.get("/", playerController.getAllPlayers);
-router.get("/:id", playerController.getPlayerById);
-router.get("/auction/:auctionId", playerController.getPlayersByAuction);
+router.get("/", getAllPlayers);
+router.get("/:id", getPlayerById);
+router.get("/auction/:auctionId", getPlayersByAuction);
 
 // Protected Routes
-// Protected Routes
-router.post("/", playerController.createPlayer);
-router.put("/:id", playerController.updatePlayer);
-router.delete("/:id", playerController.deletePlayer);
+router.post("/", auth, role(["ADMIN", "MASTER_ADMIN"]), handleUpload(upload, "image"), createPlayer);
+router.put("/:id", auth, role(["ADMIN", "MASTER_ADMIN"]), handleUpload(upload, "image"), updatePlayer);
+router.delete("/:id", auth, role(["ADMIN", "MASTER_ADMIN"]), deletePlayer);
 
-module.exports = router;
+export default router;

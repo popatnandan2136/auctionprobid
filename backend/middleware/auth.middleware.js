@@ -1,27 +1,25 @@
-const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+import jwt from 'jsonwebtoken';
+import User from '../models/user.js';
 
-module.exports = async (req, res, next) => {
-    const token = req.header("Authorization")?.replace("Bearer ", "");
-
-    if (!token) {
-        return res.status(401).json({ message: "No token, authorization denied" });
-    }
-
+const auth = async (req, res, next) => {
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded;
-
-        const user = await User.findById(req.user.id);
-        if (!user) {
-            return res.status(401).json({ message: "User not found" });
+        const token = req.header('Authorization')?.replace('Bearer ', '');
+        if (!token) {
+            return res.status(401).json({ message: 'No token, authorization denied' });
         }
 
-        // Attach user role/details if needed
-        req.user.role = user.role;
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secret');
+        const user = await User.findById(decoded.id || decoded.user?.id);
 
+        if (!user) {
+            return res.status(401).json({ message: 'Token is not valid' });
+        }
+
+        req.user = user;
         next();
     } catch (err) {
-        res.status(401).json({ message: "Token is not valid" });
+        res.status(401).json({ message: 'Token is not valid' });
     }
 };
+
+export default auth;

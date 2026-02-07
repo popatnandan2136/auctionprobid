@@ -1,7 +1,7 @@
-const Team = require("../models/Team");
-const User = require("../models/User");
-const Auction = require("../models/Auction");
-const bcrypt = require("bcryptjs");
+import Team from "../models/team.js";
+import User from "../models/user.js";
+import Auction from "../models/auction.js";
+import bcrypt from "bcryptjs";
 
 function generatePassword() {
   const chars =
@@ -13,7 +13,7 @@ function generatePassword() {
   return pwd;
 }
 
-exports.createTeam = async (req, res) => {
+export const createTeam = async (req, res) => {
   try {
     const {
       name,
@@ -86,7 +86,7 @@ exports.createTeam = async (req, res) => {
   }
 };
 
-exports.getTeamsByAuction = async (req, res) => {
+export const getTeamsByAuction = async (req, res) => {
   try {
     const { auctionId } = req.params;
     const teams = await Team.find({ auctionId });
@@ -96,7 +96,7 @@ exports.getTeamsByAuction = async (req, res) => {
   }
 };
 
-exports.getTeamById = async (req, res) => {
+export const getTeamById = async (req, res) => {
   try {
     const { teamId } = req.params;
     const team = await Team.findById(teamId);
@@ -111,7 +111,7 @@ exports.getTeamById = async (req, res) => {
   }
 };
 
-exports.updateTeam = async (req, res) => {
+export const updateTeam = async (req, res) => {
   try {
     const { teamId } = req.params;
     const updates = req.body;
@@ -167,7 +167,7 @@ exports.updateTeam = async (req, res) => {
   }
 };
 
-exports.deleteTeam = async (req, res) => {
+export const deleteTeam = async (req, res) => {
   try {
     const { teamId } = req.params;
 
@@ -188,7 +188,7 @@ exports.deleteTeam = async (req, res) => {
   }
 };
 
-exports.addBonus = async (req, res) => {
+export const addBonus = async (req, res) => {
   try {
     const { amount, teamId, auctionId } = req.body;
     const bonus = parseInt(amount);

@@ -1,63 +1,57 @@
-const multer = require("multer");
-const path = require("path");
-const fs = require("fs");
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
 
-// Ensure upload directories exist
-const createDir = (dir) => {
-    if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir, { recursive: true });
-    }
-};
-
-const storage = (folderName) => multer.diskStorage({
+const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const uploadPath = path.join(__dirname, `../public/uploads/${folderName}`);
-        createDir(uploadPath);
-        cb(null, uploadPath);
+        const dir = './uploads';
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
+        }
+        cb(null, dir);
     },
     filename: (req, file, cb) => {
         cb(null, `${Date.now()}-${file.originalname}`);
     },
 });
 
-const fileFilter = (req, file, cb) => {
-    const allowedTypes = /jpeg|jpg|png|gif|webp/;
-    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = allowedTypes.test(file.mimetype);
+const upload = multer({ storage });
 
-    if (extname && mimetype) {
-        return cb(null, true);
-    } else {
-        cb(new Error("Only images are allowed (jpeg, jpg, png, gif, webp)"));
-    }
+export const handleUpload = (multerInstance, fieldName) => {
+    return multerInstance.single(fieldName);
 };
 
-const upload = multer({
-    storage: storage('default'),
-    fileFilter,
-    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+export const uploadAuction = multer({
+    storage: multer.diskStorage({
+        destination: (req, file, cb) => {
+            const dir = './uploads/auctions';
+            if (!fs.existsSync(dir)) { fs.mkdirSync(dir, { recursive: true }); }
+            cb(null, dir);
+        },
+        filename: (req, file, cb) => { cb(null, `${Date.now()}-${file.originalname}`); }
+    })
 });
 
-// Helper for specific folders
-const uploadAuction = multer({
-    storage: storage('auctions'),
-    fileFilter,
-    limits: { fileSize: 5 * 1024 * 1024 },
+export const uploadTeam = multer({
+    storage: multer.diskStorage({
+        destination: (req, file, cb) => {
+            const dir = './uploads/teams';
+            if (!fs.existsSync(dir)) { fs.mkdirSync(dir, { recursive: true }); }
+            cb(null, dir);
+        },
+        filename: (req, file, cb) => { cb(null, `${Date.now()}-${file.originalname}`); }
+    })
 });
 
-const handleUpload = (multerInstance, fieldName) => {
-    return (req, res, next) => {
-        multerInstance.single(fieldName)(req, res, (err) => {
-            if (err) {
-                return res.status(400).json({ message: err.message });
-            }
-            next();
-        });
-    };
-};
+export const uploadPlayer = multer({
+    storage: multer.diskStorage({
+        destination: (req, file, cb) => {
+            const dir = './uploads/players';
+            if (!fs.existsSync(dir)) { fs.mkdirSync(dir, { recursive: true }); }
+            cb(null, dir);
+        },
+        filename: (req, file, cb) => { cb(null, `${Date.now()}-${file.originalname}`); }
+    })
+});
 
-module.exports = {
-    upload,
-    uploadAuction,
-    handleUpload
-};
+export default upload;

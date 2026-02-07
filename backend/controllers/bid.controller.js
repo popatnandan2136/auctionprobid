@@ -1,6 +1,6 @@
-import Auction from "../models/Auction.js";
-import Player from "../models/Player.js";
-import Team from "../models/Team.js";
+import Auction from "../models/auction.js";
+import Player from "../models/player.js";
+import Team from "../models/team.js";
 
 export const placeBid = async (req, res) => {
     try {

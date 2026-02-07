@@ -1,14 +1,11 @@
-const Auction = require("../models/Auction");
-const Player = require("../models/Player");
-const Team = require("../models/Team");
-
-// We can't use import in CommonJS, mock/stub the PlayerRequest model if it's not converted yet or use require if it exists.
-// Skipping PlayerRequest for deleteAuction for now or valid require if model exists.
+import Auction from "../models/auction.js";
+import Player from "../models/player.js";
+import Team from "../models/team.js";
 
 /****************************************************
  * CREATE AUCTION
  ****************************************************/
-exports.createAuction = async (req, res) => {
+export const createAuction = async (req, res) => {
   try {
     if (req.file) {
       const url = `${req.protocol}://${req.get("host")}/uploads/auctions/${req.file.filename}`;
@@ -51,7 +48,7 @@ exports.createAuction = async (req, res) => {
 /****************************************************
  * GET ALL AUCTIONS (PUBLIC)
  ****************************************************/
-exports.getAllAuctions = async (req, res) => {
+export const getAllAuctions = async (req, res) => {
   try {
     const auctions = await Auction.find().sort({ createdAt: -1 });
     res.json(auctions);
@@ -63,7 +60,7 @@ exports.getAllAuctions = async (req, res) => {
 /****************************************************
  * GET AUCTION BY ID (PUBLIC)
  ****************************************************/
-exports.getAuctionById = async (req, res) => {
+export const getAuctionById = async (req, res) => {
   try {
     const auction = await Auction.findById(req.params.id)
       .populate("currentPlayerId")
@@ -81,7 +78,7 @@ exports.getAuctionById = async (req, res) => {
 /****************************************************
  * UPDATE AUCTION (ADMIN)
  ****************************************************/
-exports.updateAuction = async (req, res) => {
+export const updateAuction = async (req, res) => {
   try {
     if (req.file) {
       const url = `${req.protocol}://${req.get("host")}/uploads/auctions/${req.file.filename}`;
@@ -119,7 +116,7 @@ exports.updateAuction = async (req, res) => {
 /****************************************************
  * ADD SPONSOR
  ****************************************************/
-exports.addSponsor = async (req, res) => {
+export const addSponsor = async (req, res) => {
   try {
     const auction = await Auction.findById(req.params.id);
     if (!auction)
@@ -145,7 +142,7 @@ exports.addSponsor = async (req, res) => {
 /****************************************************
  * START AUCTION
  ****************************************************/
-exports.startAuction = async (req, res) => {
+export const startAuction = async (req, res) => {
   try {
     const auction = await Auction.findById(req.params.id);
     if (!auction)
@@ -171,7 +168,7 @@ exports.startAuction = async (req, res) => {
 /****************************************************
  * RESUME AUCTION (NEW)
  ****************************************************/
-exports.resumeAuction = async (req, res) => {
+export const resumeAuction = async (req, res) => {
   try {
     const auction = await Auction.findById(req.params.id);
     if (!auction)
@@ -201,7 +198,7 @@ exports.resumeAuction = async (req, res) => {
 /****************************************************
  * FINISH AUCTION (NEW)
  ****************************************************/
-exports.finishAuction = async (req, res) => {
+export const finishAuction = async (req, res) => {
   try {
     const auction = await Auction.findById(req.params.id);
     if (!auction)
@@ -225,7 +222,7 @@ exports.finishAuction = async (req, res) => {
 /****************************************************
  * SELECT CURRENT PLAYER
  ****************************************************/
-exports.selectCurrentPlayer = async (req, res) => {
+export const selectCurrentPlayer = async (req, res) => {
   try {
     const { playerId } = req.body;
 
@@ -261,7 +258,7 @@ exports.selectCurrentPlayer = async (req, res) => {
 /****************************************************
  * MARK PLAYER SOLD
  ****************************************************/
-exports.markPlayerSold = async (req, res) => {
+export const markPlayerSold = async (req, res) => {
   try {
     const { playerId } = req.params;
     const { teamId, soldPrice } = req.body;
@@ -299,7 +296,7 @@ exports.markPlayerSold = async (req, res) => {
 /****************************************************
  * MARK PLAYER UNSOLD
  ****************************************************/
-exports.markPlayerUnsold = async (req, res) => {
+export const markPlayerUnsold = async (req, res) => {
   try {
     const player = await Player.findById(req.params.playerId);
     if (!player)
@@ -319,7 +316,7 @@ exports.markPlayerUnsold = async (req, res) => {
 /****************************************************
  * REMOVE PLAYER FROM TEAM
  ****************************************************/
-exports.removePlayerFromTeam = async (req, res) => {
+export const removePlayerFromTeam = async (req, res) => {
   try {
     const player = await Player.findById(req.params.playerId);
     if (!player)
@@ -353,7 +350,7 @@ exports.removePlayerFromTeam = async (req, res) => {
 /****************************************************
  * RELIST PLAYER
  ****************************************************/
-exports.relistPlayer = async (req, res) => {
+export const relistPlayer = async (req, res) => {
   try {
     const player = await Player.findById(req.params.playerId);
     if (!player)
@@ -371,7 +368,7 @@ exports.relistPlayer = async (req, res) => {
 /****************************************************
  * TOGGLE REGISTRATION LINK
  ****************************************************/
-exports.toggleRegistration = async (req, res) => {
+export const toggleRegistration = async (req, res) => {
   try {
     const auction = await Auction.findById(req.params.id);
     if (!auction) return res.status(404).json({ message: "Auction not found" });
@@ -392,9 +389,9 @@ exports.toggleRegistration = async (req, res) => {
 /****************************************************
  * DELETE AUCTION (HARD DELETE)
  ****************************************************/
-// const PlayerRequest = require("../models/PlayerRequest"); // Uncomment if model exists
+import PlayerRequest from "../models/playerRequest.js";
 
-exports.deleteAuction = async (req, res) => {
+export const deleteAuction = async (req, res) => {
   try {
     const { id } = req.params;
     const auction = await Auction.findById(id);
