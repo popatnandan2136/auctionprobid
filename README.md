@@ -30,6 +30,9 @@ The Real-Time Sports Auction Management System provides live, seamless, and reli
 *   **Centralized Auction Management:** Organizers can manage tournaments, teams, players, base prices, budgets, and auction rules from a single, intuitive dashboard.
 *   **Interactive Team Owner Interface:** Team owners can view available players, track remaining budgets, and participate in auctions through a smooth and user-friendly bidding interface.
 *   **Live Public Auction Screen:** Displays the current player, highest bid, remaining time, and team details in real time, allowing spectators to follow the auction without logging in and increasing event engagement.
+*   **Exportable & Shareable Cards:** Generate and download high-quality player profiles, team squads, top buy cards, and unsold player summaries for social media sharing.
+*   **Comprehensive Search & Filters:** Quickly find players by name, category, role, or team using advanced search and filtering options in the public view.
+*   **Sponsor Management:** Manage and display event sponsors on the public auction page to give visibility to partners.
 *   **Automated Bid Tracking and Records:** The system automatically records bid history, sold and unsold players, and final team compositions, eliminating manual record-keeping.
 *   **Detailed Post-Auction Reports:** Generates structured reports for organizers and teams, supporting verification, analysis, and future planning.
 *   **Scalable and Flexible Architecture:** Designed to handle multiple teams and large-scale auctions efficiently, with the ability to scale as event size grows.
@@ -39,9 +42,10 @@ The Real-Time Sports Auction Management System provides live, seamless, and reli
 
 The Real-Time Sports Auction Management System is developed using a modern full-stack technology stack to ensure real-time performance, scalability, and reliability.
 
-*   **Frontend:** React
+*   **Frontend:** React, Vite, Lucide-React (Icons), html2canvas (Image Generation)
 *   **Backend:** Node.js, Express
 *   **Database:** MongoDB
+*   **Styling:** CSS Modules, Custom CSS Variables
 
 ## 5. Project Structure
 
@@ -85,29 +89,65 @@ auctionprobid/
 
 ## 6. Installation & Setup
 
+### Prerequisites
+*   Node.js (v16 or higher)
+*   npm (v8 or higher) or yarn
+*   MongoDB (Local or Atlas connection string)
+
+### Environment Variables
+Create a `.env` file in both `backend` and `frontend` directories.
+
+**Backend `.env` Example:**
+```env
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret_key
+```
+
+**Frontend `.env` Example:**
+```env
+VITE_API_URL=http://localhost:5000/api
+```
+
 ### Backend Setup
-1.  Go to Backend Folder and Start Server
+1.  Go to Backend Folder and Install Dependencies
     ```bash
     cd backend
     npm install
+    ```
+2.  Start the Backend Server
+    ```bash
     npm start
     ```
+    *   Runs on: `http://localhost:5000` (default)
 
 ### Frontend Setup
-1.  Go to Frontend Folder and Start Application (Vite + React)
+1.  Go to Frontend Folder and Install Dependencies
     ```bash
     cd frontend
     npm install
+    ```
+2.  Start the Application (Vite + React)
+    ```bash
     npm run dev
     ```
+3.  Open the application in your browser: `http://localhost:5173`
 
-2.  Check output using URL: http://localhost:5173
+## 7. Usage
 
-## 7. Demo
+*   **Admin Dashboard:** Log in as an administrator to create auctions, manage teams, and control the bidding process.
+*   **Public View:** Share the auction link with spectators to view live bidding updates, player stats, and team standings without logging in.
+*   **Team Owners:** Log in to place bids and manage your team's budget in real-time.
+
+## 8. Project Gallery
+
+Check the `Round 3 Final System Images And Videos` folder for visual assets and screenshots of the system in action.
+
+## 9. Demo
 
 *   **GitHub:** [https://github.com/popatnandan2136/auctionprobid](https://github.com/popatnandan2136/auctionprobid)
 
-## 8. Future Scope
+## 10. Future Scope
 
 The Real-Time Sports Auction Management System has strong potential for future enhancement and expansion. One of the key planned improvements is the integration of a Flutter-based mobile application that will provide live auction updates on both Android and iOS platforms. This mobile application will allow organizers, team owners, and spectators to track ongoing auctions in real time, receive instant notifications for bids, player status, and auction results, and participate more conveniently from mobile devices.
 
@@ -115,7 +155,7 @@ To make the platform more feature-rich, additional functionalities such as advan
 
 Beyond sports, the system can be extended into a multi-domain auction platform supporting vehicles, property, banking assets, and surplus goods. With document verification, audit logs, and scalable infrastructure, the platform can evolve into a robust, enterprise-ready solution. By continuously expanding features and introducing cross-platform support through Flutter, the system aims to become a comprehensive, future-ready auction management ecosystem.
 
-## 9. Team Members
+## 11. Team Members
 
 **Team Name:** Star Group
 
