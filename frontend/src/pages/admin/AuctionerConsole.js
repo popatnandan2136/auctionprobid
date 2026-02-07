@@ -12,8 +12,7 @@ export default function AuctioneerConsole() {
     const [teams, setTeams] = useState([]);
     const [currentPlayer, setCurrentPlayer] = useState(null);
     const [selectedTeam, setSelectedTeam] = useState(null);
-    const [loading, setLoading] = useState(true);
-
+    const [sessionStarted, setSessionStarted] = useState(false);
     const pollRef = useRef(null);
 
     useEffect(() => {
@@ -23,7 +22,6 @@ export default function AuctioneerConsole() {
     }, [id]);
 
     const init = async () => {
-        setLoading(true);
         const [a, p, t] = await Promise.all([
             API.get(`/auction/${id}`),
             API.get(`/player/auction/${id}`),
@@ -33,7 +31,6 @@ export default function AuctioneerConsole() {
         setPlayers(p.data);
         setTeams(t.data);
         if (a.data.currentPlayerId) fetchPlayer(a.data.currentPlayerId);
-        setLoading(false);
     };
 
     const fetchPlayer = async (pid) => {
@@ -43,26 +40,44 @@ export default function AuctioneerConsole() {
 
     const startPolling = () => {
         pollRef.current = setInterval(async () => {
+            if (sessionStarted) return;
             const res = await API.get(`/bid/${id}/state`);
             if (res.data.currentPlayer) setCurrentPlayer(res.data.currentPlayer);
         }, 2000);
     };
 
-    const placeBid = async (amount) => {
+    const placeBid = (amount) => {
         if (!selectedTeam) return alert("Select team");
-        await API.post(`/bid`, {
-            playerId: currentPlayer._id,
-            teamId: selectedTeam._id,
-            amount
-        });
+        setSessionStarted(true);
+        setCurrentPlayer(prev => ({
+            ...prev,
+            status: "IN_AUCTION",
+            currentTopBid: amount,
+            bids: [...(prev.bids || []), { amount, teamId: selectedTeam }]
+        }));
+        setSelectedTeam(null);
+    };
+
+    const resetSession = () => {
+        setSessionStarted(true);
+        setCurrentPlayer(prev => ({
+            ...prev,
+            status: "IN_AUCTION",
+            currentTopBid: 0,
+            bids: [],
+            teamId: null
+        }));
     };
 
     const sellPlayer = async () => {
-        if (!currentPlayer || !selectedTeam) return;
+        const lastBid = currentPlayer.bids.at(-1);
+        if (!lastBid) return;
+
         await API.post(`/player/${currentPlayer._id}/sell`, {
-            teamId: selectedTeam._id,
+            teamId: lastBid.teamId._id,
             soldPrice: currentPlayer.currentTopBid
         });
+
         navigate(`/admin/auction/${id}/table?view=PLAYERS`);
     };
 
@@ -70,8 +85,6 @@ export default function AuctioneerConsole() {
         await API.post(`/player/${currentPlayer._id}/unsold`);
         navigate(`/admin/auction/${id}/table?view=PLAYERS`);
     };
-
-    if (loading) return <div>Loading...</div>;
 
     return (
         <div style={{ height: "100vh", background: "#0f0c29", color: "white" }}>
@@ -94,6 +107,7 @@ export default function AuctioneerConsole() {
                         +50K
                     </button>
 
+                    <button onClick={resetSession}>RESET</button>
                     <button onClick={sellPlayer}><Hammer /> SOLD</button>
                     <button onClick={markUnsold}><XCircle /> UNSOLD</button>
                 </>
