@@ -1,4 +1,4 @@
-import Auction from "../models/auction.js";
+import Auction from "../models/Auction.js";
 import Player from "../models/player.js";
 import Team from "../models/team.js";
 
