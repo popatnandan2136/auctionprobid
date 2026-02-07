@@ -1,20 +1,16 @@
-import Player from "../models/Player.js";
+const Player = require("../models/Player");
 
-export const createPlayer = async (req, res) => {
+exports.createPlayer = async (req, res) => {
   try {
     const player = await Player.create(req.body);
 
-    res.status(201).json({
-      message: "Player created successfully",
-      player,
-    });
+    res.status(201).json({ message: "Player created", player });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-
-export const getAllPlayers = async (req, res) => {
+exports.getAllPlayers = async (req, res) => {
   try {
     const players = await Player.find();
 
@@ -24,7 +20,17 @@ export const getAllPlayers = async (req, res) => {
   }
 };
 
-export const getPlayerById = async (req, res) => {
+exports.getPlayersByAuction = async (req, res) => {
+  try {
+    const { auctionId } = req.params;
+    const players = await Player.find({ auctionId });
+    res.json(players);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.getPlayerById = async (req, res) => {
   try {
     const player = await Player.findById(req.params.id);
 
@@ -38,7 +44,7 @@ export const getPlayerById = async (req, res) => {
   }
 };
 
-export const updatePlayer = async (req, res) => {
+exports.updatePlayer = async (req, res) => {
   try {
     const player = await Player.findByIdAndUpdate(
       req.params.id,
@@ -50,16 +56,13 @@ export const updatePlayer = async (req, res) => {
       return res.status(404).json({ message: "Player not found" });
     }
 
-    res.json({
-      message: "Player updated successfully",
-      player,
-    })
+    res.json({ message: "Player updated", player });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-export const deletePlayer = async (req, res) => {
+exports.deletePlayer = async (req, res) => {
   try {
     const player = await Player.findByIdAndDelete(req.params.id);
 
@@ -67,7 +70,7 @@ export const deletePlayer = async (req, res) => {
       return res.status(404).json({ message: "Player not found" });
     }
 
-    res.json({ message: "Player deleted successfully" });
+    res.json({ message: "Player deleted" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

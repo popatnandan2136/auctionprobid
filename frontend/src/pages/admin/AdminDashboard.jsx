@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import API from '../../api';
+import MainLoader from '../../components/MainLoader';
 import { FaBars, FaChartBar, FaGavel, FaUsers, FaPlus, FaCog, FaEdit, FaTrash, FaSignOutAlt } from 'react-icons/fa';
 import './AdminDashboard.css';
 
@@ -7,6 +9,50 @@ const AdminDashboard = () => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('All Auctions');
     const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [auctions, setAuctions] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    // Fetch Auctions on Mount
+    useEffect(() => {
+        fetchAuctions();
+    }, []);
+
+    const fetchAuctions = async () => {
+        setLoading(true);
+        try {
+            const { data } = await API.get('/auctions/all'); // Updated endpoint
+            setAuctions(data);
+            setError(null);
+        } catch (err) {
+            console.error("Error fetching auctions:", err);
+            setError("Failed to load auctions. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleDelete = async (e, id) => {
+        e.stopPropagation();
+        if (window.confirm("Are you sure you want to delete this auction? This cannot be undone.")) {
+            try {
+                await API.delete(`/auctions/${id}`);
+                setAuctions(auctions.filter(a => a._id !== id));
+            } catch (err) {
+                alert("Failed to delete auction");
+            }
+        }
+    };
+
+    const getFilteredAuctions = () => {
+        if (activeTab === 'All Auctions') return auctions;
+        if (activeTab === 'Live') return auctions.filter(a => a.status === 'LIVE');
+        if (activeTab === 'Upcoming') return auctions.filter(a => a.status === 'NOT_STARTED' || a.status === 'UPCOMING');
+        if (activeTab === 'Completed') return auctions.filter(a => a.status === 'FINISHED');
+        return auctions;
+    };
+
+    if (loading) return <MainLoader />;
 
     return (
         <div className="admin-layout">
@@ -62,28 +108,41 @@ const AdminDashboard = () => {
                         ))}
                     </div>
 
+                    {error && <div style={{ color: 'red', marginTop: '20px' }}>{error}</div>}
+
                     <div className="auction-grid">
-                        {/* Example Auction Card */}
-                        <div className="auction-card">
-                            <div className="card-image">
-                                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/84/Tata_IPL_Logo_2024.png/800px-Tata_IPL_Logo_2024.png" alt="IPL 2026" />
+                        {getFilteredAuctions().length === 0 && !loading && !error && (
+                            <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '40px', color: '#666' }}>
+                                No auctions found. Create one to get started!
                             </div>
-                            <div className="card-content">
-                                <h3>IPL 2026</h3>
-                                <p className="card-meta">Teams: 17 • Budget: ₹0.1 Cr</p>
-                                <div className="card-footer">
-                                    <div className="status-badge live">
-                                        <span className="status-dot"></span> LIVE
-                                    </div>
-                                    <div className="card-actions">
-                                        <button className="action-btn settings" onClick={() => navigate('/admin/auction/ipl2026')}><FaCog /></button>
-                                        <button className="action-btn edit"><FaEdit /></button>
-                                        <button className="action-btn delete"><FaTrash /></button>
+                        )}
+
+                        {getFilteredAuctions().map(auction => (
+                            <div className="auction-card" key={auction._id}>
+                                <div className="card-image">
+                                    <img
+                                        src={auction.logoUrl || "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png"}
+                                        alt={auction.name}
+                                        onError={(e) => { e.target.onerror = null; e.target.src = "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" }}
+                                    />
+                                </div>
+                                <div className="card-content">
+                                    <h3>{auction.name}</h3>
+                                    <p className="card-meta">Teams: {auction.totalTeams} • Budget: ₹{(auction.pointsPerTeam / 10000000).toFixed(2)} Cr</p>
+                                    <div className="card-footer">
+                                        <div className={`status-badge ${auction.status.toLowerCase()}`}>
+                                            <span className="status-dot"></span> {auction.status}
+                                        </div>
+                                        <div className="card-actions">
+                                            <button className="action-btn settings" title="Manage Auction" onClick={() => navigate(`/admin/auction/${auction._id}`)}><FaCog /></button>
+                                            <button className="action-btn settings" title="Public View" onClick={() => navigate(`/auction/${auction._id}`)}><FaUsers /></button>
+                                            <button className="action-btn delete" title="Delete" onClick={(e) => handleDelete(e, auction._id)}><FaTrash /></button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        {/* Add more cards here dynamically */}
+                        ))}
+
                     </div>
                 </main>
             </div>
