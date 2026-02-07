@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { X, User, LogOut, LayoutDashboard, Settings, HelpCircle, LogIn } from 'lucide-react';
+import logo from '../../assets/logo.png';
 
 const Sidebar = ({ isOpen, onClose }) => {
     const { user, logout, isAdmin, isMaster } = useAuth();
@@ -59,7 +60,8 @@ const Sidebar = ({ isOpen, onClose }) => {
             <div style={sidebarStyle}>
                 <div style={headerStyle}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <img src={require('../../assets/logo.png')} alt="ProBid" style={{ height: '30px', background: 'white', borderRadius: '4px', padding: '2px' }} />
+
+                        <img src={logo} alt="ProBid" style={{ height: '30px', background: 'white', borderRadius: '4px', padding: '2px' }} />
                         <h3 style={{ margin: 0 }}>ProBid</h3>
                     </div>
                     <X size={24} onClick={onClose} style={{ cursor: 'pointer' }} />

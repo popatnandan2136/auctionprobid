@@ -1696,212 +1696,199 @@ export default function AuctionPublicView() {
                 {activeTab === "sponsors" && (
                     <div style={{ background: 'rgba(255,255,255,0.95)', borderRadius: '20px', padding: '25px', boxShadow: '0 5px 20px rgba(0,0,0,0.1)' }}>
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '20px' }}>
+
                             {auction.sponsors && auction.sponsors.length > 0 ? (
-                                {/* Sponsors */ }
-{activeTab === "sponsors" && (
-                                <div style={{
-                                    background: 'rgba(255,255,255,0.95)',
-                                    borderRadius: '20px',
-                                    padding: '25px',
-                                    boxShadow: '0 5px 20px rgba(0,0,0,0.1)'
-                                }}>
-                                    <div style={{
-                                        display: 'grid',
-                                        gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
-                                        gap: '20px'
-                                    }}>
-                                        {auction.sponsors && auction.sponsors.length > 0 ? (
-                                            auction.sponsors.map((sponsor, idx) => (
-                                                <div key={idx} style={{ position: 'relative' }}>
+                                auction.sponsors.map((sponsor, idx) => (
+                                    <div key={idx} style={{ position: 'relative' }}>
 
-                                                    {/* Hidden Sponsor Card */}
-                                                    <div
-                                                        id={`sponsor-card-${sponsor._id}`}
-                                                        style={{
-                                                            position: 'absolute',
-                                                            left: '-9999px',
-                                                            top: 0,
-                                                            width: '600px',
-                                                            height: '600px',
-                                                            background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)',
-                                                            padding: '50px',
-                                                            borderRadius: '30px',
-                                                            display: 'flex',
-                                                            flexDirection: 'column',
-                                                            alignItems: 'center',
-                                                            justifyContent: 'center'
-                                                        }}
-                                                    >
+                                        {/* Hidden Sponsor Card */}
+                                        <div
+                                            id={`sponsor-card-${sponsor._id}`}
+                                            style={{
+                                                position: 'absolute',
+                                                left: '-9999px',
+                                                top: 0,
+                                                width: '600px',
+                                                height: '600px',
+                                                background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)',
+                                                padding: '50px',
+                                                borderRadius: '30px',
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                alignItems: 'center',
+                                                justifyContent: 'center'
+                                            }}
+                                        >
+                                            <img
+                                                src="/probid_logo.png"
+                                                alt="PROBID"
+                                                style={{
+                                                    position: 'absolute',
+                                                    top: '50%',
+                                                    left: '50%',
+                                                    transform: 'translate(-50%, -50%)',
+                                                    opacity: 0.05,
+                                                    width: '400px',
+                                                    zIndex: 0
+                                                }}
+                                            />
+
+                                            <div style={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
+                                                <div style={{
+                                                    fontSize: '1.5rem',
+                                                    letterSpacing: '5px',
+                                                    textTransform: 'uppercase',
+                                                    color: '#999',
+                                                    marginBottom: '40px'
+                                                }}>
+                                                    Official Sponsor
+                                                </div>
+
+                                                <div style={{
+                                                    width: '250px',
+                                                    height: '250px',
+                                                    margin: '0 auto 40px',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center'
+                                                }}>
+                                                    {sponsor.logoUrl ? (
                                                         <img
-                                                            src="/probid_logo.png"
-                                                            alt="PROBID"
-                                                            style={{
-                                                                position: 'absolute',
-                                                                top: '50%',
-                                                                left: '50%',
-                                                                transform: 'translate(-50%, -50%)',
-                                                                opacity: 0.05,
-                                                                width: '400px',
-                                                                zIndex: 0
-                                                            }}
-                                                        />
-
-                                                        <div style={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
-                                                            <div style={{
-                                                                fontSize: '1.5rem',
-                                                                letterSpacing: '5px',
-                                                                textTransform: 'uppercase',
-                                                                color: '#999',
-                                                                marginBottom: '40px'
-                                                            }}>
-                                                                Official Sponsor
-                                                            </div>
-
-                                                            <div style={{
-                                                                width: '250px',
-                                                                height: '250px',
-                                                                margin: '0 auto 40px',
-                                                                display: 'flex',
-                                                                alignItems: 'center',
-                                                                justifyContent: 'center'
-                                                            }}>
-                                                                {sponsor.logoUrl ? (
-                                                                    <img
-                                                                        src={sponsor.logoUrl}
-                                                                        alt={sponsor.name}
-                                                                        style={{
-                                                                            width: '100%',
-                                                                            height: '100%',
-                                                                            objectFit: 'contain'
-                                                                        }}
-                                                                    />
-                                                                ) : (
-                                                                    <span style={{ fontSize: '8rem' }}>🤝</span>
-                                                                )}
-                                                            </div>
-
-                                                            <h1 style={{
-                                                                fontSize: '2.5rem',
-                                                                margin: '0 0 10px 0',
-                                                                color: '#333'
-                                                            }}>
-                                                                {sponsor.name}
-                                                            </h1>
-
-                                                            <p style={{ fontSize: '1.2rem', color: '#666' }}>
-                                                                Official Partner of {auction.name}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-
-                                                    {/* Visible Sponsor Card */}
-                                                    <div
-                                                        onClick={() => openModal("SPONSOR", sponsor)}
-                                                        style={{
-                                                            textAlign: 'center',
-                                                            padding: '30px',
-                                                            background: 'linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7))',
-                                                            backdropFilter: 'blur(10px)',
-                                                            borderRadius: '20px',
-                                                            cursor: 'pointer',
-                                                            transition: 'all 0.3s',
-                                                            display: 'flex',
-                                                            flexDirection: 'column',
-                                                            boxShadow: '0 8px 32px rgba(31,38,135,0.15)',
-                                                            border: '1px solid rgba(255,255,255,0.18)'
-                                                        }}
-                                                    >
-                                                        <div>
-                                                            <div style={{
-                                                                width: '120px',
-                                                                height: '120px',
-                                                                margin: '0 auto 20px',
-                                                                borderRadius: '50%',
-                                                                background: 'white',
-                                                                display: 'flex',
-                                                                alignItems: 'center',
-                                                                justifyContent: 'center',
-                                                                overflow: 'hidden'
-                                                            }}>
-                                                                {sponsor.logoUrl ? (
-                                                                    <img
-                                                                        src={sponsor.logoUrl}
-                                                                        alt={sponsor.name}
-                                                                        style={{
-                                                                            width: '90px',
-                                                                            height: '90px',
-                                                                            objectFit: 'contain'
-                                                                        }}
-                                                                    />
-                                                                ) : (
-                                                                    <span style={{ fontSize: '3.5rem' }}>🤝</span>
-                                                                )}
-                                                            </div>
-
-                                                            <h4 style={{
-                                                                margin: '10px 0',
-                                                                fontSize: '1.4rem',
-                                                                fontWeight: '800'
-                                                            }}>
-                                                                {sponsor.name}
-                                                            </h4>
-
-                                                            <p style={{
-                                                                fontSize: '0.9rem',
-                                                                color: '#718096'
-                                                            }}>
-                                                                Official Partner
-                                                            </p>
-                                                        </div>
-
-                                                        <button
-                                                            onClick={(e) => {
-                                                                e.stopPropagation();
-                                                                downloadSponsorCard(sponsor);
-                                                            }}
+                                                            src={sponsor.logoUrl}
+                                                            alt={sponsor.name}
                                                             style={{
                                                                 width: '100%',
-                                                                marginTop: '20px',
-                                                                padding: '12px',
-                                                                background: 'linear-gradient(90deg, #667eea, #764ba2)',
-                                                                color: 'white',
-                                                                border: 'none',
-                                                                borderRadius: '12px',
-                                                                cursor: 'pointer',
-                                                                fontWeight: 'bold'
+                                                                height: '100%',
+                                                                objectFit: 'contain'
                                                             }}
-                                                        >
-                                                            <Download size={16} /> Download Card
-                                                        </button>
-                                                    </div>
-
+                                                        />
+                                                    ) : (
+                                                        <span style={{ fontSize: '8rem' }}>🤝</span>
+                                                    )}
                                                 </div>
-                                            ))
-                                        ) : (
-                                            <div style={{
-                                                gridColumn: '1 / -1',
-                                                textAlign: 'center',
-                                                padding: '60px',
-                                                color: '#999'
-                                            }}>
-                                                <div style={{ fontSize: '4rem', marginBottom: '20px' }}>🤝</div>
-                                                <h3>No sponsors yet</h3>
-                                                <p>Sponsors will be displayed here</p>
+
+                                                <h1 style={{
+                                                    fontSize: '2.5rem',
+                                                    margin: '0 0 10px 0',
+                                                    color: '#333'
+                                                }}>
+                                                    {sponsor.name}
+                                                </h1>
+
+                                                <p style={{ fontSize: '1.2rem', color: '#666' }}>
+                                                    Official Partner of {auction.name}
+                                                </p>
                                             </div>
-                                        )}
+                                        </div>
+
+                                        {/* Visible Sponsor Card */}
+                                        <div
+                                            onClick={() => openModal("SPONSOR", sponsor)}
+                                            style={{
+                                                textAlign: 'center',
+                                                padding: '30px',
+                                                background: 'linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7))',
+                                                backdropFilter: 'blur(10px)',
+                                                borderRadius: '20px',
+                                                cursor: 'pointer',
+                                                transition: 'all 0.3s',
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                boxShadow: '0 8px 32px rgba(31,38,135,0.15)',
+                                                border: '1px solid rgba(255,255,255,0.18)'
+                                            }}
+                                        >
+                                            <div>
+                                                <div style={{
+                                                    width: '120px',
+                                                    height: '120px',
+                                                    margin: '0 auto 20px',
+                                                    borderRadius: '50%',
+                                                    background: 'white',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    overflow: 'hidden'
+                                                }}>
+                                                    {sponsor.logoUrl ? (
+                                                        <img
+                                                            src={sponsor.logoUrl}
+                                                            alt={sponsor.name}
+                                                            style={{
+                                                                width: '90px',
+                                                                height: '90px',
+                                                                objectFit: 'contain'
+                                                            }}
+                                                        />
+                                                    ) : (
+                                                        <span style={{ fontSize: '3.5rem' }}>🤝</span>
+                                                    )}
+                                                </div>
+
+                                                <h4 style={{
+                                                    margin: '10px 0',
+                                                    fontSize: '1.4rem',
+                                                    fontWeight: '800'
+                                                }}>
+                                                    {sponsor.name}
+                                                </h4>
+
+                                                <p style={{
+                                                    fontSize: '0.9rem',
+                                                    color: '#718096'
+                                                }}>
+                                                    Official Partner
+                                                </p>
+                                            </div>
+
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    downloadSponsorCard(sponsor);
+                                                }}
+                                                style={{
+                                                    width: '100%',
+                                                    marginTop: '20px',
+                                                    padding: '12px',
+                                                    background: 'linear-gradient(90deg, #667eea, #764ba2)',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    borderRadius: '12px',
+                                                    cursor: 'pointer',
+                                                    fontWeight: 'bold'
+                                                }}
+                                            >
+                                                <Download size={16} /> Download Card
+                                            </button>
+                                        </div>
+
                                     </div>
+                                ))
+                            ) : (
+                                <div style={{
+                                    gridColumn: '1 / -1',
+                                    textAlign: 'center',
+                                    padding: '60px',
+                                    color: '#999'
+                                }}>
+                                    <div style={{ fontSize: '4rem', marginBottom: '20px' }}>🤝</div>
+                                    <h3>No sponsors yet</h3>
+                                    <p>Sponsors will be displayed here</p>
                                 </div>
                             )}
-                        </div>
-)}
 
-                        <DetailsModal
-                            isOpen={modalOpen}
-                            onClose={() => setModalOpen(false)}
-                            data={modalData}
-                            type={modalType}
-                        />
+                        </div>
                     </div>
-                );
+                )}
+            </div>
+
+            <DetailsModal
+                isOpen={modalOpen}
+                onClose={() => setModalOpen(false)}
+                data={modalData}
+                type={modalType}
+            />
+        </div>
+    );
 }
 
